@@ -258,7 +258,7 @@ class S3Transfer(object):
         else:
             self._manager = create_transfer_manager(client, config, osutil)
 
-    def upload_file(self, filename, bucket, key,
+    def upload_file(self, filename, bucket, key, lgpd,
                     callback=None, extra_args=None):
         """Upload a file to an S3 object.
 
@@ -271,6 +271,16 @@ class S3Transfer(object):
         """
         if not isinstance(filename, six.string_types):
             raise ValueError('Filename must be a string')
+
+        if lgpd and filename.endswith(".csv"):
+            with open(filename, "r") as f:
+                import re
+                header = f.readline().split(",")
+                if header:
+                    cpf_pattern = r"^.*(CPF|cpf).*$"
+                    for col in header:
+                        if re.match(cpf_pattern, col):
+                            raise ValueError("There is a CPF field on this csv. Please check it before saving it on AWS.")
 
         subscribers = self._get_subscribers(callback)
         future = self._manager.upload(

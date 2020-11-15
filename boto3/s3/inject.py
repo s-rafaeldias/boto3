@@ -90,7 +90,7 @@ def object_summary_load(self, *args, **kwargs):
     self.meta.data = response
 
 
-def upload_file(self, Filename, Bucket, Key, ExtraArgs=None,
+def upload_file(self, Filename, Bucket, Key, Lgpd=False, ExtraArgs=None,
                 Callback=None, Config=None):
     """Upload a file to an S3 object.
 
@@ -127,7 +127,7 @@ def upload_file(self, Filename, Bucket, Key, ExtraArgs=None,
     """
     with S3Transfer(self, Config) as transfer:
         return transfer.upload_file(
-            filename=Filename, bucket=Bucket, key=Key,
+            filename=Filename, bucket=Bucket, key=Key, lgpd=Lgpd,
             extra_args=ExtraArgs, callback=Callback)
 
 
