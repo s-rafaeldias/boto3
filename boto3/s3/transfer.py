@@ -258,7 +258,7 @@ class S3Transfer(object):
         else:
             self._manager = create_transfer_manager(client, config, osutil)
 
-    def upload_file(self, filename, bucket, key, lgpd,
+    def upload_file(self, filename, bucket, key, lgpd=False,
                     callback=None, extra_args=None):
         """Upload a file to an S3 object.
 
